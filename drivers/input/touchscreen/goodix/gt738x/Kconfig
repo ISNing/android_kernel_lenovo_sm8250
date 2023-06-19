@@ -4,7 +4,7 @@
 menuconfig TOUCHSCREEN_GOODIX_GT738X
 	bool "Goodix GT738x touchscreen"
 	depends on I2C
-	default y
+	default n
 	help
 	  Say Y here if you have a Goodix GT738x touch controller
 	  to your system.
@@ -15,7 +15,7 @@ if TOUCHSCREEN_GOODIX_GT738X
 
 config TOUCHSCREEN_GOODIX_GT738X_UPDATE
 	tristate "Goodix GT738x firmware update module"
-	default y
+	default n
 	help
 	  Say Y here to enable support for doing firmware update.
 
