@@ -29,9 +29,11 @@
 #define	LID_DEV_NAME	"hall_sensor"
 #define HALL_INPUT	"/dev/input/hall_dev"
 
-#include "./touchscreen/goodix/goodix_ts_core.h"
+#ifdef CONFIG_TOUCHSCREEN_GOODIX_BRL
+#include "./touchscreen/goodix/brl/goodix_ts_core.h"
 extern void goodix_tp_reset(void);
 extern struct goodix_ts_core *cd_next;
+#endif //CONFIG_TOUCHSCREEN_GOODIX_BRL
 
 bool hall_disable_fp_pk = false;
 
@@ -71,11 +73,13 @@ static irqreturn_t hall_interrupt_handler(int irq, void *dev)
 		pm_wakeup_event(data->hall_dev->dev.parent, 500);
 		input_report_switch(data->hall_dev, SW_LID, 0);
 		//dev_dbg(&data->hall_dev->dev, "hall switch far\n");
+		#ifdef CONFIG_TOUCHSCREEN_GOODIX_BRL
 		if (cd_next&&cd_next->init_stage == CORE_INIT_STAGE2) {
                         goodix_tp_reset();
                 } else {
                         hall_dbg("tp probe, cannot reset");
                 }
+		#endif // CONFIG_TOUCHSCREEN_GOODIX_BRL
 
 		hall_disable_fp_pk = false;
 		hall_dbg("hall switch far\n");
