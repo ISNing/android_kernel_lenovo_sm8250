@@ -2013,12 +2013,12 @@ int goodix_ts_stage2_init(struct goodix_ts_core *core_data)
 /*#ifdef CONFIG_FB
 	core_data->fb_notifier.notifier_call = goodix_ts_fb_notifier_callback;
 	if (fb_register_client(&core_data->fb_notifier))
-		ts_err("Failed to register fb notifier client:%d", r);*/
-#ifdef CONFIG_DRM
+		ts_err("Failed to register fb notifier client:%d", r);
+#elif CONFIG_DRM
 	core_data->fb_notifier.notifier_call = goodix_drm_notifier_callback;
 	if(msm_drm_register_client(&core_data->fb_notifier))
-		ts_info(" Unable to register goodix fb_notifier");
-#elif defined(CONFIG_HAS_EARLYSUSPEND)
+		ts_info(" Unable to register goodix fb_notifier");*/
+#ifdef CONFIG_HAS_EARLYSUSPEND
 	core_data->early_suspend.level = EARLY_SUSPEND_LEVEL_BLANK_SCREEN + 1;
 	core_data->early_suspend.resume = goodix_ts_lateresume;
 	core_data->early_suspend.suspend = goodix_ts_earlysuspend;
@@ -2201,3 +2201,9 @@ int goodix_ts_core_release(struct goodix_ts_core *core_data)
 	goodix_ts_dev_release();
 	return 0;
 }
+
+int usb_is_plugin(bool enabled)
+{
+	return 0;
+}
+EXPORT_SYMBOL(usb_is_plugin);
